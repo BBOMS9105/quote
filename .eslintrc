@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "prettier/prettier": [
+      "error", 
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "eol-last": "off"
+  }
+} 
