@@ -3,10 +3,10 @@ import { QuoteService } from './quote.service';
 
 @Controller('quote')
 export class QuoteController {
-  constructor (private readonly quoteService: QuoteService) {}
+  constructor(private readonly quoteService: QuoteService) {}
 
   @Get()
-  getQuote(): string {
+  getQuote(): { quote: string; author: string } {
     return this.quoteService.getRandomQuote();
   }
 }
