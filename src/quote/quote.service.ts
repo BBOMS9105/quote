@@ -1,11 +1,12 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, NotFoundException } from '@nestjs/common';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
-interface Quote {
+export type Quote = {
+  id: number;
   quote: string;
   author: string;
-}
+};
 
 @Injectable()
 export class QuoteService implements OnModuleInit {
@@ -20,5 +21,25 @@ export class QuoteService implements OnModuleInit {
   getRandomQuote(): { quote: string; author: string } {
     const index = Math.floor(Math.random() * this.quotes.length);
     return this.quotes[index];
+  }
+
+  getQuoteById(id: number): Quote {
+    const quote = this.quotes.find((quote) => quote.id === id);
+
+    if (!quote) {
+      throw new NotFoundException('Quote not found');
+    }
+
+    return quote;
+  }
+
+  createQuote(quote: { quote: string; author: string }): Quote {
+    const newQuote = {
+      id: this.quotes.length + 1,
+      quote: quote.quote,
+      author: quote.author,
+    };
+    this.quotes.push(newQuote);
+    return newQuote;
   }
 }

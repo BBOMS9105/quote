@@ -1,8 +1,8 @@
 {
   "name": "quote",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "<p align=\"center\">   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"120\" alt=\"Nest Logo\" /></a> </p>",
+  "author": "Seungchan Lee",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -69,5 +69,17 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BBOMS9105/quote.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BBOMS9105/quote/issues"
+  },
+  "homepage": "https://github.com/BBOMS9105/quote#readme"
 }
