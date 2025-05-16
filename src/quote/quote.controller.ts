@@ -34,12 +34,26 @@ export class QuoteController {
     return quotes;
   }
 
+  @Get('random')
+  async getRandomQuote() {
+    const quotes = await this.quoteService.findAll();
+    if (quotes.length === 0) {
+      this.logger.error('No quotes found for random selection');
+      throw new NotFoundException('No quotes available');
+    }
+
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+
+    this.logger.log('Random Quote Retrieved. id: ' + randomQuote.id);
+    return randomQuote;
+  }
+
   @Get(':id')
   async getQuoteById(@Param('id') id: number) {
     const quote = await this.quoteService.findOne(id);
     if (!quote) {
       this.logger.error('Quote Not Found. id: ' + id);
-      this.logger.log('Quote Not Found. id: ' + id);
       throw new NotFoundException('Quote Not Found');
     }
     this.logger.log('Quote Found. id: ' + id);
