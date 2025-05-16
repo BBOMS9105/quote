@@ -13,7 +13,7 @@ export type QuoteDto = {
 export class QuoteService {
   constructor(@InjectRepository(Quote) private quoteRepo: Repository<Quote>) {}
 
-  create(quote: QuoteDto) {
+  createQuote(quote: QuoteDto) {
     const newQuote = this.quoteRepo.create(quote);
     return this.quoteRepo.save(newQuote);
   }
@@ -28,5 +28,21 @@ export class QuoteService {
       throw new NotFoundException('Quote not found');
     }
     return quote;
+  }
+
+  async updateQuote(id: number, quote: QuoteDto) {
+    const existingQuote = await this.findOne(id);
+    if (!existingQuote) {
+      throw new NotFoundException('Quote not found');
+    }
+    const updatedQuote = this.quoteRepo.merge(existingQuote, quote);
+    return this.quoteRepo.save(updatedQuote);
+  }
+
+  async deleteQuote(id: number) {
+    const result = await this.quoteRepo.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Quote not found');
+    }
   }
 }
