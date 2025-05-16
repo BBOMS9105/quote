@@ -6,6 +6,8 @@
         "endOfLine": "auto"
       }
     ],
-    "eol-last": "off"
+    "eol-last": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off"
   }
 } 

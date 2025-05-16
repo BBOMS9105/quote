@@ -1,45 +1,32 @@
-import { Injectable, OnModuleInit, NotFoundException } from '@nestjs/common';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Quote } from './entity/quote.entity';
 
-export type Quote = {
+export type QuoteDto = {
   id: number;
   quote: string;
   author: string;
 };
 
 @Injectable()
-export class QuoteService implements OnModuleInit {
-  private quotes: Quote[] = [];
+export class QuoteService {
+  constructor(@InjectRepository(Quote) private quoteRepo: Repository<Quote>) {}
 
-  async onModuleInit() {
-    const filePath = join(process.cwd(), 'src', 'quote', 'quotes.json');
-    const fileContent = await readFile(filePath, 'utf-8');
-    this.quotes = JSON.parse(fileContent) as Quote[];
+  create(quote: QuoteDto) {
+    const newQuote = this.quoteRepo.create(quote);
+    return this.quoteRepo.save(newQuote);
   }
 
-  getRandomQuote(): { quote: string; author: string } {
-    const index = Math.floor(Math.random() * this.quotes.length);
-    return this.quotes[index];
+  findAll() {
+    return this.quoteRepo.find();
   }
 
-  getQuoteById(id: number): Quote {
-    const quote = this.quotes.find((quote) => quote.id === id);
-
+  async findOne(id: number) {
+    const quote = await this.quoteRepo.findOneBy({ id });
     if (!quote) {
       throw new NotFoundException('Quote not found');
     }
-
     return quote;
-  }
-
-  createQuote(quote: { quote: string; author: string }): Quote {
-    const newQuote = {
-      id: this.quotes.length + 1,
-      quote: quote.quote,
-      author: quote.author,
-    };
-    this.quotes.push(newQuote);
-    return newQuote;
   }
 }
