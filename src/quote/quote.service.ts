@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quote } from './entity/quote.entity';
+import { CreateQuoteDto } from './dto/quote/create-quote.dto';
+import { UpdateQuoteDto } from './dto/quote/update-quote.dto';
 
 export type QuoteDto = {
   id: number;
@@ -13,16 +15,16 @@ export type QuoteDto = {
 export class QuoteService {
   constructor(@InjectRepository(Quote) private quoteRepo: Repository<Quote>) {}
 
-  createQuote(quote: QuoteDto) {
-    const newQuote = this.quoteRepo.create(quote);
+  createQuote(quoteDto: CreateQuoteDto): Promise<Quote> {
+    const newQuote = this.quoteRepo.create(quoteDto);
     return this.quoteRepo.save(newQuote);
   }
 
-  findAll() {
+  findAll(): Promise<Quote[]> {
     return this.quoteRepo.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Quote> {
     const quote = await this.quoteRepo.findOneBy({ id });
     if (!quote) {
       throw new NotFoundException('Quote not found');
@@ -30,16 +32,13 @@ export class QuoteService {
     return quote;
   }
 
-  async updateQuote(id: number, quote: QuoteDto) {
+  async updateQuote(id: number, quoteDto: UpdateQuoteDto): Promise<Quote> {
     const existingQuote = await this.findOne(id);
-    if (!existingQuote) {
-      throw new NotFoundException('Quote not found');
-    }
-    const updatedQuote = this.quoteRepo.merge(existingQuote, quote);
+    const updatedQuote = this.quoteRepo.merge(existingQuote, quoteDto);
     return this.quoteRepo.save(updatedQuote);
   }
 
-  async deleteQuote(id: number) {
+  async deleteQuote(id: number): Promise<void> {
     const result = await this.quoteRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Quote not found');
