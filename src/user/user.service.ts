@@ -3,31 +3,31 @@ import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entity/user.entity';
+import { Users } from './entity/users.entity';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(Users)
+    private userRepository: Repository<Users>,
   ) {}
 
   async findAll() {
     return this.userRepository.find();
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<Users | null> {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async findByKakaoId(kakaoId: string): Promise<User | null> {
+  async findByKakaoId(kakaoId: string): Promise<Users | null> {
     return this.userRepository.findOne({ where: { kakaoId } });
   }
 
   // 회원가입
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<Users> {
     // 이메일 중복 체크
     const existingUserByEmail = await this.findByEmail(createUserDto.email);
     if (existingUserByEmail) {
@@ -66,7 +66,7 @@ export class UserService {
 
       // 비밀번호 필드 제외하고 반환
       const { password, ...userWithoutPassword } = savedUser;
-      return userWithoutPassword as User;
+      return userWithoutPassword as Users;
     } catch (error) {
       Logger.error('회원 가입 중 오류가 발생했습니다.', error);
       throw new InternalServerErrorException(

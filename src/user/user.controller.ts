@@ -1,5 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { User } from './entity/user.entity';
+import { Users } from './entity/users.entity';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -9,7 +9,7 @@ export class UserController {
 
   //회원가입
   @Post('signup')
-  async signup(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async signup(@Body() createUserDto: CreateUserDto): Promise<Users> {
     return this.userService.createUser(createUserDto);
   }
 }
