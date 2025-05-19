@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuoteModule } from './quote/quote.module';
-
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +19,7 @@ import { QuoteModule } from './quote/quote.module';
       synchronize: true, // TODO: Remove in production
     }),
     QuoteModule,
+    UserModule,
   ],
 })
 export class AppModule {}
