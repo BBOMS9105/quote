@@ -106,11 +106,10 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 - 회원가입 시 비밀번호 필드 제외 반환
 
 ## 앞으로 구현할 기능 (To-Do)
-- Auth 모듈 구현
-- JWT 발급 구현
-- 로그인 실패/성공 예외처리
-- passport, passport-jwt, passport-kakao 전략 적용
-- 로그인/소셜로그인 성공 시 JWT 토큰 발급 및 응답
+- AuthModule/Controller/Service 생성 및 구조 설계
+- JWT 기반 로그인 API 구현 (passport, passport-jwt 적용)
+- 로그인 성공 시 JWT 토큰 발급 및 응답
+- 카카오 OAuth2.0 로그인 연동 (passport-kakao 적용)
+- 소셜 로그인 콜백 처리 및 JWT 발급
 - 인증이 필요한 API에 JWT Guard 적용
 - Refresh Token 및 로그아웃 기능 추가
-- OAuth 2.0 kakao 구현 (프론트엔드 만들어서 콜백/리다이렉트 구현)
